@@ -3,6 +3,9 @@ const cors = require('cors')
 const dotenv = require('dotenv').config();
 const mongoose = require('mongoose')
 const { loginUser, registerUser } = require('./controllers/authController');
+const {authenticateToken} = require('./middlewares/authMiddleware')
+const {protectedRoute} = require('./controllers/protectedController')
+
 
 const app = express()
 app.use(cors())
@@ -28,7 +31,8 @@ app.post('/register', registerUser)
 
 app.post('/login', loginUser );
 
+app.get('/protected-route', authenticateToken, protectedRoute);
+
 app.listen(process.env.PORT,() => {
     console.log("Server is running at port 3001")
 })
-
